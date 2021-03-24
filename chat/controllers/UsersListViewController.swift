@@ -16,13 +16,17 @@ class UsersListViewController: UIViewController {
     var selectedUser: User?
     var activeUser: User?
     
-    let db = Firestore.firestore()
+    let db = FirestoreDb.get()
+    
+    private func logout() {
+        self.performSegue(withIdentifier: Constants.Segues.UsersListToStart, sender: self)
+    }
     
     @IBAction func handleLogout(_ sender: Any) {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-            self.performSegue(withIdentifier: Constants.Segues.UsersListToStart, sender: self)
+            logout()
         } catch {
             print("Error when singing out.")
         }
@@ -30,7 +34,11 @@ class UsersListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if let currentUser = Auth.auth().currentUser {
+            self.activeUser = User(email: currentUser.email!)
+        } else {
+            logout()
+        }
         userTableView.dataSource = self
         userTableView.register(UINib(nibName: Constants.Identifiers.UserCell, bundle: nil), forCellReuseIdentifier: Constants.Identifiers.UserCell)
         

@@ -31,10 +31,4 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let activeUser = activeUser {
-            AuthorizeUtil.setActiveUser(segue: segue, activeUser: activeUser)
-        }
-    }
 }

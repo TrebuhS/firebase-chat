@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		504C2680CBCF16218258A98F /* Pods_chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30EB8EF39FDC6BABBF19AD6A /* Pods_chat.framework */; };
+		EE172780260A9BCC002BA2CF /* FirestoreDb.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE17277F260A9BCC002BA2CF /* FirestoreDb.swift */; };
+		EE172785260BDAAC002BA2CF /* MessageDto.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE172784260BDAAC002BA2CF /* MessageDto.swift */; };
+		EE172795260BE2F5002BA2CF /* MessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE172789260BDF2E002BA2CF /* MessageMapper.swift */; };
 		EE41DF8925EEE71700D34621 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE41DF8725EEE71700D34621 /* UserCell.swift */; };
 		EE41DF8A25EEE71700D34621 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EE41DF8825EEE71700D34621 /* UserCell.xib */; };
-		EE493F8425F37CEF00B33FB5 /* Authorize.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE493F8325F37CEF00B33FB5 /* Authorize.swift */; };
 		EE5EC77A25E1A0A70028BB41 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5EC77925E1A0A70028BB41 /* User.swift */; };
 		EE5EC78425E469700028BB41 /* UsersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5EC78325E469700028BB41 /* UsersListViewController.swift */; };
 		EE5EEE7E25C2245300E7E488 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE5EEE7D25C2245300E7E488 /* GoogleService-Info.plist */; };
@@ -52,9 +54,11 @@
 		30EB8EF39FDC6BABBF19AD6A /* Pods_chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		41A04476D02CCA547FFF2CA8 /* Pods-chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chat.debug.xcconfig"; path = "Target Support Files/Pods-chat/Pods-chat.debug.xcconfig"; sourceTree = "<group>"; };
 		75940A3C3A9D548967AE9E56 /* Pods-chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chat.release.xcconfig"; path = "Target Support Files/Pods-chat/Pods-chat.release.xcconfig"; sourceTree = "<group>"; };
+		EE17277F260A9BCC002BA2CF /* FirestoreDb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDb.swift; sourceTree = "<group>"; };
+		EE172784260BDAAC002BA2CF /* MessageDto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDto.swift; sourceTree = "<group>"; };
+		EE172789260BDF2E002BA2CF /* MessageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageMapper.swift; sourceTree = "<group>"; };
 		EE41DF8725EEE71700D34621 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		EE41DF8825EEE71700D34621 /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
-		EE493F8325F37CEF00B33FB5 /* Authorize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorize.swift; sourceTree = "<group>"; };
 		EE5EC77925E1A0A70028BB41 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		EE5EC78325E469700028BB41 /* UsersListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListViewController.swift; sourceTree = "<group>"; };
 		EE5EEE7D25C2245300E7E488 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -122,6 +126,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		EE172791260BDF34002BA2CF /* messages */ = {
+			isa = PBXGroup;
+			children = (
+				EE172789260BDF2E002BA2CF /* MessageMapper.swift */,
+				EE172784260BDAAC002BA2CF /* MessageDto.swift */,
+			);
+			path = messages;
+			sourceTree = "<group>";
+		};
 		EE41DF8425EEE64D00D34621 /* message */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,7 +164,7 @@
 		EE493F8225F37CCB00B33FB5 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				EE493F8325F37CEF00B33FB5 /* Authorize.swift */,
+				EE17277F260A9BCC002BA2CF /* FirestoreDb.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -230,6 +243,7 @@
 		EEE6283825FD69BD00FC64B2 /* dto */ = {
 			isa = PBXGroup;
 			children = (
+				EE172791260BDF34002BA2CF /* messages */,
 				EEE6283925FD69E400FC64B2 /* users */,
 			);
 			path = dto;
@@ -425,13 +439,15 @@
 				EEBDC7C025B77AF100ABB105 /* RegisterViewController.swift in Sources */,
 				EEBDC78925B7735900ABB105 /* WelcomeViewController.swift in Sources */,
 				EEE6284325FD6A6800FC64B2 /* UserItemDto.swift in Sources */,
+				EE172795260BE2F5002BA2CF /* MessageMapper.swift in Sources */,
 				EE74DA2D25DB2524000BB9C7 /* AppConstants.swift in Sources */,
 				EE861E1125DEF9F400C0F475 /* MessageCell.swift in Sources */,
+				EE172785260BDAAC002BA2CF /* MessageDto.swift in Sources */,
 				EE5EC78425E469700028BB41 /* UsersListViewController.swift in Sources */,
-				EE493F8425F37CEF00B33FB5 /* Authorize.swift in Sources */,
 				EEBDC78525B7735900ABB105 /* AppDelegate.swift in Sources */,
 				EEBDC7C525B77B0100ABB105 /* ChatViewController.swift in Sources */,
 				EE6A4E3225DF035900AF8761 /* Message.swift in Sources */,
+				EE172780260A9BCC002BA2CF /* FirestoreDb.swift in Sources */,
 				EEBDC78725B7735900ABB105 /* SceneDelegate.swift in Sources */,
 				EEADAF2225B7886800D21D06 /* AuthorizeTextField.swift in Sources */,
 				EE5EC77A25E1A0A70028BB41 /* User.swift in Sources */,

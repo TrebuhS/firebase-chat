@@ -12,7 +12,7 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    let db = Firestore.firestore()
+    let db = FirestoreDb.get()
     var activeUser: User?
     
     @IBAction func handleRegisterButton(_ sender: Any) {
@@ -40,12 +40,6 @@ class RegisterViewController: UIViewController {
                     self.performSegue(withIdentifier: Constants.Segues.RegisterToUsersList, sender: self)
                 }
             }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let activeUser = activeUser {
-            AuthorizeUtil.setActiveUser(segue: segue, activeUser: activeUser)
-        }
     }
     
     override func viewDidLoad() {
