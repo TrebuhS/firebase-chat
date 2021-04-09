@@ -43,6 +43,9 @@ class ChatViewController: UIViewController {
         
         messageTableView.dataSource = self
         messageTableView.register(UINib(nibName: Constants.Identifiers.MessageCell, bundle: nil), forCellReuseIdentifier: Constants.Identifiers.MessageCell)
+        
+        self.loadOldMessages()
+        self.setListenerForNewMessages()
     }
 }
 
@@ -61,53 +64,62 @@ extension ChatViewController: UITableViewDataSource {
 extension ChatViewController {
     private func appendMessage(message: Message) -> Void {
         messages.append(message)
-        self.messageTableView.reloadData()
     }
     
     private func handleMessageLoading(documents: [DocumentSnapshot]) -> Void {
         do {
             try documents.forEach { document in
+                print("asdf", document)
                 let data = try document.data(as: MessageDto.self)
                 if let message = data {
-                    if message.receiver == self.activeUser.email {
-                        self.appendMessage(message: MessageMapper.toMessage(message))
-                    }
+                    self.appendMessage(message: MessageMapper.toMessage(message))
                 }
             }
+            self.messageTableView.reloadData()
+            self.messageTableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: UITableView.ScrollPosition.bottom, animated: false)
+            print(self.messages)
         } catch let error {
             print(error)
         }
     }
     
-    func loadMessages() -> Void {
-        do {
-            try db.collection(Constants.Firebase.Collection.messages).addSnapshotListener { documentSnapshot, error in
-                if let err = error {
-                    return
-                } else {
-                    if let documents = documentSnapshot?.documents {
-                        self.handleMessageLoading(documents: documents)
-                    }
+    func loadOldMessages() -> Void {
+        self.db.collection(Constants.Firebase.Collection.Messages.CollectionName)
+            .whereField(Constants.Firebase.Collection.Messages.Fields.Receiver, in: [self.activeUser.email, self.chatUser.email])
+            .order(by: Constants.Firebase.Collection.Messages.Fields.Date)
+            .limit(toLast: 1)
+            .getDocuments { (querySnapshot, error) in
+            if error == nil {
+                if let documents = querySnapshot?.documents {
+                    self.handleMessageLoading(documents: documents)
                 }
             }
-        } catch {
-            print ("Error when loading new messages.")
+        }
+        _ = self.messages.popLast()
+    }
+    
+    func setListenerForNewMessages() -> Void {
+        self.db.collection(Constants.Firebase.Collection.Messages.CollectionName)
+            .whereField(Constants.Firebase.Collection.Messages.Fields.Receiver, in: [self.activeUser.email, self.chatUser.email])
+            .order(by: Constants.Firebase.Collection.Messages.Fields.Date)
+            .limit(toLast: 10)
+            .addSnapshotListener { documentSnapshot, error in
+            if error == nil {
+                if let documents = documentSnapshot?.documents {
+                    self.handleMessageLoading(documents: documents)
+                }
+            }
         }
     }
     
     func sendMessage(text: String) -> Void {
-        let message = MessageDto(sender: activeUser.email, receiver: chatUser.email, text: text)
+        let message = MessageDto(sender: activeUser.email, receiver: chatUser.email, text: text, date: Timestamp())
         do {
-            try db.collection(Constants.Firebase.Collection.messages).addDocument(from: message) { error in
-                if let err = error {
-                    print("Error", err)
-                } else {
-                    self.appendMessage(message: MessageMapper.toMessage(message))
-                }
-            }
+            _ = try db.collection(Constants.Firebase.Collection.Messages.CollectionName).addDocument(from: message)
+            self.appendMessage(message: MessageMapper.toMessage(message))
+            self.messageTableView.reloadData()
         } catch let error {
             print("Error with message: ", error)
         }
-        
     }
 }

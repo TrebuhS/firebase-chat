@@ -9,7 +9,6 @@ import UIKit
 
 protocol UserCellProtocol {
     func handleUserSelection(user: User?)
-//    var selectedUser: User? { get <#set#> }
 }
 
 class UserCell: UITableViewCell {
@@ -27,7 +26,9 @@ class UserCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        delegate?.handleUserSelection(user: self.user)
+        if selected {
+            delegate?.handleUserSelection(user: self.user)
+        }
     }
     
 }

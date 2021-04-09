@@ -64,14 +64,14 @@ class UsersListViewController: UIViewController {
                 }
                 
                 switch result {
-                case .success(_):
-                    if self.users.count > 0 {
-                        self.userTableView.reloadData()
-                    } else {
-                        print("no users")
-                    }
-                case .failure(_):
-                    print("no users found")
+                    case .success(_):
+                        if self.users.count > 0 {
+                            self.userTableView.reloadData()
+                        } else {
+                            print("no users")
+                        }
+                    case .failure(_):
+                        print("no users found")
                 }
             })
     }
@@ -85,6 +85,7 @@ extension UsersListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = userTableView.dequeueReusableCell(withIdentifier: Constants.Identifiers.UserCell, for: indexPath) as! UserCell
         cell.delegate = self
+        cell.user = self.users[indexPath.row]
         cell.userEmailLabel.text = self.users[indexPath.row].email
         return cell
     }

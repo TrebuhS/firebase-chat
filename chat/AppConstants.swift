@@ -22,8 +22,16 @@ struct Constants {
     
     struct Firebase {
         struct Collection {
+            struct Messages {
+                static let CollectionName = "messages"
+                struct Fields {
+                    static let Receiver = "receiver"
+                    static let Sender = "sender"
+                    static let Text = "text"
+                    static let Date = "date"
+                }
+            }
             static let users = "users"
-            static let messages = "messages"
         }
     }
 }

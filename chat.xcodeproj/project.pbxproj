@@ -169,6 +169,13 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
+		EE84FF77261E2D3300E967E0 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
 		EEBDC77825B7735900ABB105 = {
 			isa = PBXGroup;
 			children = (
@@ -209,6 +216,7 @@
 		EEBDC7B725B77A3400ABB105 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				EE84FF77261E2D3300E967E0 /* Firebase */,
 				EEE6283825FD69BD00FC64B2 /* dto */,
 				EE493F8225F37CCB00B33FB5 /* utils */,
 				EE6A4E3125DF035900AF8761 /* Message.swift */,
