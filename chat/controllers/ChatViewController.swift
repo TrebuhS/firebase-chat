@@ -56,7 +56,16 @@ extension ChatViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.messageTableView.dequeueReusableCell(withIdentifier: Constants.Identifiers.MessageCell, for: indexPath) as! MessageCell
-        cell.messageLabel.text = self.messages[indexPath.row].text
+        let message = self.messages[indexPath.row]
+        cell.messageLabel.text = message.text
+        if activeUser.email == message.sender {
+            cell.chatUserAvatarBox.isHidden = true
+            cell.activeUserAvatarBox.isHidden = false
+            
+        } else {
+            cell.activeUserAvatarBox.isHidden = true
+            cell.chatUserAvatarBox.isHidden = false
+        }
         return cell
     }
 }
@@ -87,7 +96,7 @@ extension ChatViewController {
         self.db.collection(Constants.Firebase.Collection.Messages.CollectionName)
             .whereField(Constants.Firebase.Collection.Messages.Fields.Receiver, in: [self.activeUser.email, self.chatUser.email])
             .order(by: Constants.Firebase.Collection.Messages.Fields.Date)
-            .limit(toLast: 1)
+            .limit(toLast: 10)
             .getDocuments { (querySnapshot, error) in
             if error == nil {
                 if let documents = querySnapshot?.documents {
@@ -102,7 +111,7 @@ extension ChatViewController {
         self.db.collection(Constants.Firebase.Collection.Messages.CollectionName)
             .whereField(Constants.Firebase.Collection.Messages.Fields.Receiver, in: [self.activeUser.email, self.chatUser.email])
             .order(by: Constants.Firebase.Collection.Messages.Fields.Date)
-            .limit(toLast: 10)
+            .limit(toLast: 1)
             .addSnapshotListener { documentSnapshot, error in
             if error == nil {
                 if let documents = documentSnapshot?.documents {
@@ -116,8 +125,6 @@ extension ChatViewController {
         let message = MessageDto(sender: activeUser.email, receiver: chatUser.email, text: text, date: Timestamp())
         do {
             _ = try db.collection(Constants.Firebase.Collection.Messages.CollectionName).addDocument(from: message)
-            self.appendMessage(message: MessageMapper.toMessage(message))
-            self.messageTableView.reloadData()
         } catch let error {
             print("Error with message: ", error)
         }
